@@ -47,15 +47,15 @@ For add(u, v):
 Returns the addition of the two vectors. 
 Be sure to add together values for all keys from u.f and v.f even if some keys in u.f do not exist in v.f (or vice versa)
     
->>> a = Vec({'a','e','i','o','u'}, {'a':0,'e':1,'i':2})
->>> b = Vec({'a','e','i','o','u'}, {'o':4,'u':7})
->>> c = Vec({'a','e','i','o','u'}, {'a':0,'e':1,'i':2,'o':4,'u':7}) 
->>> a + b == c
+a = Vec({'a','e','i','o','u'}, {'a':0,'e':1,'i':2})
+b = Vec({'a','e','i','o','u'}, {'o':4,'u':7})
+c = Vec({'a','e','i','o','u'}, {'a':0,'e':1,'i':2,'o':4,'u':7}) 
+a + b == c
 True
->>> d = Vec({'x','y','z'}, {'x':2,'y':1})
->>> e = Vec({'x','y','z'}, {'z':4,'y':-1})
->>> f = Vec({'x','y','z'}, {'x':2,'y':0,'z':4})
->>> d + e == f
+d = Vec({'x','y','z'}, {'x':2,'y':1})
+e = Vec({'x','y','z'}, {'z':4,'y':-1})
+f = Vec({'x','y','z'}, {'x':2,'y':0,'z':4})
+d + e == f
 True
 >>> b + Vec({'a','e','i','o','u'}, {}) == b
 True
@@ -64,17 +64,17 @@ For dot(u, v):
     
 Returns the dot product of the two vectors.
 
->>> u1 = Vec({'a','b'}, {'a':1, 'b':2})
->>> u2 = Vec({'a','b'}, {'b':2, 'a':1})
+u1 = Vec({'a','b'}, {'a':1, 'b':2})
+u2 = Vec({'a','b'}, {'b':2, 'a':1})
 >>> u1*u2
 5
->>> v1 = Vec({'p','q','r','s'}, {'p':2,'s':3,'q':-1,'r':0})
->>> v2 = Vec({'p','q','r','s'}, {'p':-2,'r':5})
->>> v1*v2
+v1 = Vec({'p','q','r','s'}, {'p':2,'s':3,'q':-1,'r':0})
+v2 = Vec({'p','q','r','s'}, {'p':-2,'r':5})
+v1*v2
 -4
->>> w1 = Vec({'a','b','c'}, {'a':2,'b':3,'c':4})
->>> w2 = Vec({'a','b','c'}, {'a':12,'b':8,'c':6})
->>> w1*w2
+w1 = Vec({'a','b','c'}, {'a':2,'b':3,'c':4})
+w2 = Vec({'a','b','c'}, {'a':12,'b':8,'c':6})
+w1*w2
 72
 
 For scalar_mul(v, alpha):
