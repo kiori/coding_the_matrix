@@ -1,6 +1,5 @@
-voting_data = list(open("voting_record_dump109.txt"))
-
 ## Task 1
+voting_data = list(open("voting_record_dump109.txt"))
 
 def create_voting_dict():
     """
@@ -21,19 +20,20 @@ def create_voting_dict():
 
     You can use the split() procedure to split each line of the
     strlist into a list; the first element of the list will be the senator's
-    name, the second will be his/her party affiliation (R or D), the
+    name, the sejcond will be his/her party affiliation (R or D), the
     third will be his/her home state, and the remaining elements of
     the list will be that senator's voting record on a collection of bills.
     A "1" represents a 'yea' vote, a "-1" a 'nay', and a "0" an abstention.
 
     The lists for each senator should preserve the order listed in voting data. 
     """
-    return dict() 
-    
+    list_data = [xx.split() for xx in voting_data]
+    return {xx[0]: list(map(int, xx[3:])) for xx in list_data}
 
 ## Task 2
 
 def policy_compare(sen_a, sen_b, voting_dict):
+
     """
     Input: last names of sen_a and sen_b, and a voting dictionary mapping senator
            names to lists representing their voting records.
@@ -44,8 +44,8 @@ def policy_compare(sen_a, sen_b, voting_dict):
         >>> policy_compare('Fox-Epstein','Ravella', voting_dict)
         -2
     """
-    return 0.0
 
+    return sum([voting_dict[sen_a][i]*voting_dict[sen_b][i] for i in range(len(voting_dict[sen_a]))])
 
 ## Task 3
 
@@ -63,9 +63,8 @@ def most_similar(sen, voting_dict):
 
     Note that you can (and are encouraged to) re-use you policy_compare procedure.
     """
-    
-    return ""
-    
+    policy_comparison = {policy_compare(sen, test_senator, voting_dict): test_senator for test_senator, record in voting_dict.items() if test_senator!=sen}
+    return policy_comparison[max(policy_comparison.keys())]
 
 ## Task 4
 
@@ -80,14 +79,14 @@ def least_similar(sen, voting_dict):
         >>> least_similar('Klein', vd)
         'Ravella'
     """
-    return ""
-    
-    
+    policy_comparison = {policy_compare(sen, test_senator, voting_dict): test_senator for test_senator, record in voting_dict.items() if test_senator!=sen}
+
+    return policy_comparison[min(policy_comparison.keys())]
 
 ## Task 5
 
-most_like_chafee    = ''
-least_like_santorum = '' 
+most_like_chafee    = 'Jeffords'
+least_like_santorum = 'Feingold' 
 
 
 
@@ -102,9 +101,10 @@ def find_average_similarity(sen, sen_set, voting_dict):
         >>> find_average_similarity('Klein', {'Fox-Epstein','Ravella'}, vd)
         -0.5
     """
-    return ...
+    dot_products = [policy_compare(sen, test_sen, voting_dict) for test_sen in sen_set]
+    return sum(dot_products)/len(dot_products)
 
-most_average_Democrat = ... # give the last name (or code that computes the last name)
+most_average_Democrat = 'Sarbanes'
 
 
 # Task 7
@@ -119,9 +119,17 @@ def find_average_record(sen_set, voting_dict):
         >>> find_average_record({'Fox-Epstein','Ravella'}, voting_dict)
         [-0.5, -0.5, 0.0]
     """
-    return ...
+    initial_rec = [0]*len(voting_dict[list(sen_set)[0]])
+    for name in sen_set:
+        initial_rec = [voting_dict[name][i]+initial_rec[i] for i in range(len(initial_rec))]
+    average_rec = [float(vote)/len(sen_set) for vote in initial_rec]
 
-average_Democrat_record = ... # (give the vector)
+    return average_rec
+
+voting_dict = create_voting_dict()
+dems = {act.split()[0] for act in voting_data if act.split()[1]=='D'}
+
+average_Democrat_record = find_average_record(dems, voting_dict)
 
 
 # Task 8
@@ -137,5 +145,7 @@ def bitter_rivals(voting_dict):
         >>> bitter_rivals(voting_dict)
         ('Fox-Epstein', 'Ravella')
     """
-    return (..., ...)
+    senators = voting_dict.keys()
+    comparison_dict = {policy_compare(senator, least_similar(senator, voting_dict), voting_dict): tuple([senator, least_similar(senator, voting_dict)]) for senator in senators}
+    return comparison_dict[min(comparison_dict.keys())]
 
