@@ -1,6 +1,5 @@
 def getitem(v,d):
     "Returns the value of entry d in v"
-    
     assert d in v.D
     return v.f[d] if d in v.f else 0
 
